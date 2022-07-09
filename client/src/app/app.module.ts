@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { HelpersModule } from './helpers/helpers.module'
-import { TemplateModule } from './template/template.module'
+import { HelpersModule } from './shared/helpers/helpers.module'
+import { TemplateModule } from './shared/template/template.module'
 
 @NgModule({
   declarations: [AppComponent],
