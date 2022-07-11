@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { validateFields } from 'src/app/shared'
+import { ActivatedRoute } from '@angular/router'
+import { catchError, map } from 'rxjs'
+import {
+  storeInLocalStorage,
+  User,
+  validateFields,
+  validFields,
+} from 'src/app/shared'
 
 import { CadastroService } from '../../services/cadastro.service'
 
@@ -11,14 +18,24 @@ import { CadastroService } from '../../services/cadastro.service'
 })
 export class CadastroComponent implements OnInit {
   formCadastro: FormGroup
-  errorMessage: string
+  invalidFields: validFields[]
+  generalErrorMessage: string
+  userData: any
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly cadastroService: CadastroService
+    private readonly cadastroService: CadastroService,
+    private readonly route: ActivatedRoute
   ) {
     this.formCadastro = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.email, Validators.required])],
+      email: [
+        '',
+        Validators.compose([
+          Validators.email,
+          Validators.required,
+          Validators.minLength(3),
+        ]),
+      ],
       username: ['', Validators.compose([Validators.required])],
       password: [
         '',
@@ -31,23 +48,46 @@ export class CadastroComponent implements OnInit {
       ],
     })
 
-    this.errorMessage = ''
+    this.invalidFields = []
+    this.generalErrorMessage = ''
+    this.userData = this.route.snapshot.data['userData']
+  }
+
+  getInvalidField(name: string) {
+    const foundInvalidField = this.invalidFields.filter(
+      item => item.name === name
+    )
+    return foundInvalidField
+      ? this.invalidFields.includes(foundInvalidField[0])
+      : false
   }
 
   handleSubmit() {
-    const allFieldsValid = validateFields(this.formCadastro, [
-      'email',
-      'password',
-      'username',
-    ])
-    if (allFieldsValid === true)
+    const allFieldsValid: validFields[] | Boolean = validateFields(
+      this.formCadastro,
+      ['email', 'password', 'username']
+    )
+    if (allFieldsValid === true) {
+      this.invalidFields = []
+      this.generalErrorMessage = ''
       this.cadastroService
         .postUser(this.formCadastro.value)
-        .subscribe(data => console.log(data))
-    else {
-      this.errorMessage = `Verifique seus dados: campos inválidos ${allFieldsValid[0].name}`
-    }
+        .pipe(
+          map(obj => obj),
+          catchError(error => {
+            throw new Error(error.error.message)
+          })
+        )
+        .subscribe({
+          next: data => {
+            storeInLocalStorage('_id', data._id)
+          },
+          error: data => (this.generalErrorMessage = data),
+        })
+    } else this.invalidFields = (<validFields[]>allFieldsValid).map(obj => obj)
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.userData)
+  }
 }

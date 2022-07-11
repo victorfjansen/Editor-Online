@@ -1,4 +1,4 @@
-<section class="bg-white dark:bg-gray-900 h-auto sm:block lg:flex">
+<!-- <section class="bg-white dark:bg-gray-900 h-auto sm:block lg:flex">
   <img
     src="https://images.unsplash.com/photo-1657393799953-569abfa59c47?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
     class="image"
@@ -6,7 +6,7 @@
   <div
     class="md:max-w-7xl mx-auto my-auto px-4 sm:px-6 lg:px-8 h-screen flex flex-col justify-center"
   >
-    <div class="sigin mx-auto h-auto mt-20">
+    <div class="sigin mx-auto h-auto mt-24">
       <div class="bg-gray-100 p-10 flex flex-col w-full shadow-xl rounded-xl">
         <h2 class="text-2xl font-bold text-gray-800 text-left mb-5">
           Entre Aqui!
@@ -22,7 +22,13 @@
               placeholder="Insira seu nome de usuário"
               formControlName="username"
               class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:shadow-lg"
+              [class.border-red-500]="getInvalidField('username')"
             />
+            <span
+              class="input-field mt-1 red-600 text-xs text-red-600"
+              *ngIf="getInvalidField('username')"
+              >Digite um username válido - deve conter 3 letras no mínimo</span
+            >
           </div>
           <div id="input" class="flex flex-col w-full my-5">
             <label for="email" class="text-gray-500 mb-2">Email</label>
@@ -31,8 +37,14 @@
               id="email"
               placeholder="Insira seu email"
               formControlName="email"
-              class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:shadow-lg"
+              class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:shadow-lg input-field"
+              [class.border-red-500]="getInvalidField('email')"
             />
+            <span
+              class="input-field mt-1 red-600 text-xs text-red-600"
+              *ngIf="getInvalidField('email')"
+              >Digite um email válido!</span
+            >
           </div>
           <div id="input" class="flex flex-col w-full my-5">
             <label for="password" class="text-gray-500 mb-2">Senha</label>
@@ -42,8 +54,24 @@
               placeholder="Insira sua senha"
               formControlName="password"
               class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:shadow-lg"
+              [class.border-red-500]="getInvalidField('password')"
             />
+            <span
+              class="input-field mt-1 red-600 text-xs text-red-600"
+              *ngIf="getInvalidField('password')"
+              >Digite uma senha válida!
+              <br />
+              Deve conter: <br />
+              - No mínimo 8 catectéres <br />
+              - 1 letra maiúscula <br />
+              - 1 símbolo especial
+            </span>
           </div>
+          <span
+            class="input-field mt-4 red-600 text-xs text-red-600"
+            *ngIf="generalErrorMessage"
+            >{{ generalErrorMessage }}</span
+          >
           <div id="button" class="flex flex-col w-full my-5">
             <button
               type="button"
@@ -83,3 +111,5 @@
     </div>
   </div>
 </section>
+ -->
+<app-card-login></app-card-login>
