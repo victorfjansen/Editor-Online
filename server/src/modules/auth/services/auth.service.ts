@@ -32,4 +32,8 @@ export class AuthService {
     if (foundUser) return foundUser;
     else notFoundException('Usuário não encontrado!');
   }
+
+  async getUserById(_id: string): Promise<User> {
+    return await this.authModel.findOne({ _id });
+  }
 }

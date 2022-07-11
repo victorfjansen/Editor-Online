@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 
 import { CreateUserDto, GetUserDto } from '../models/dtos';
 import { User } from '../models/interfaces';
@@ -11,6 +11,11 @@ export class AuthController {
   @Get()
   async authUser(@Body() userData: GetUserDto): Promise<User | null> {
     return await this.authService.authUser(userData);
+  }
+
+  @Get('/userById')
+  async getUserById(@Headers('_id') _id: string): Promise<User> {
+    return await this.authService.getUserById(_id);
   }
 
   @Post()

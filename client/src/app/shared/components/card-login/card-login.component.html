@@ -1,10 +1,10 @@
 <div
   class="md:max-w-7xl mx-auto my-auto px-4 sm:px-6 lg:px-8 h-screen flex flex-col justify-center"
 >
-  <div class="sigin mx-auto h-auto mt-24">
+  <div class="sigin mx-auto h-auto -mt-1">
     <div class="bg-gray-100 p-10 flex flex-col w-full shadow-xl rounded-xl">
       <h2 class="text-2xl font-bold text-gray-800 text-left">
-        Continuar como {{ userData.username }}
+        Continuar como {{ userData.username }} ?
       </h2>
       <div id="input" class="flex flex-col w-full mt-5">
         <p class="text-gray-500 mb-2">{{ userData.email }}</p>
@@ -22,11 +22,12 @@
           </div>
         </button>
         <div class="flex justify-evenly mt-3">
-          <a
-            routerLink="/login"
+          <button
             class="w-full text-center font-medium text-gray-500"
-            >Usar outra conta</a
+            (click)="switchState()"
           >
+            Usar outra conta
+          </button>
         </div>
       </div>
     </div>
