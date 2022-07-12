@@ -1,35 +1,45 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { HttpClientModule } from "@angular/common/http";
+import { TestBed } from "@angular/core/testing";
+import { BrowserModule } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
+import { RouterTestingModule } from "@angular/router/testing";
 
-describe('AppComponent', () => {
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { HomeModule } from "./modules/home/pages/root/home.module";
+import { LoginModule } from "./modules/Login/pages/root/login.module";
+import { HelpersModule } from "./shared/helpers/helpers.module";
+import { TemplateModule } from "./shared/template/template.module";
+
+import { APP_BASE_HREF } from "@angular/common";
+
+describe("AppComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterModule,
+        RouterTestingModule,
+        BrowserModule,
+        AppRoutingModule,
+        TemplateModule,
+        HelpersModule,
+        HomeModule,
+        LoginModule,
+        HttpClientModule,
       ],
-      declarations: [
-        AppComponent
+      declarations: [AppComponent],
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: "./modules",
+        },
       ],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it("should create the app", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'fast-editor'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('fast-editor');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('fast-editor app is running!');
   });
 });

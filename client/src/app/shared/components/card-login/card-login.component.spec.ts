@@ -1,23 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TemplateModule } from "../../template/template.module";
 
-import { CardLoginComponent } from './card-login.component';
+import { CardLoginComponent } from "./card-login.component";
 
-describe('CardLoginComponent', () => {
+describe("CardLoginComponent", () => {
   let component: CardLoginComponent;
   let fixture: ComponentFixture<CardLoginComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CardLoginComponent ]
-    })
-    .compileComponents();
+      declarations: [CardLoginComponent],
+      imports: [TemplateModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CardLoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,16 +1,20 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClientModule } from "@angular/common/http";
+import { TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
 
-import { UserAlreadyAuthenticatedGuard } from './user-already-authenticated.guard';
+import { UserAlreadyAuthenticatedResolve } from "./user-already-authenticated.guard";
 
-describe('UserAlreadyAuthenticatedGuard', () => {
-  let guard: UserAlreadyAuthenticatedGuard;
+describe("UserAlreadyAuthenticatedGuard", () => {
+  let guard: UserAlreadyAuthenticatedResolve;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    guard = TestBed.inject(UserAlreadyAuthenticatedGuard);
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule, RouterTestingModule],
+    });
+    guard = TestBed.inject(UserAlreadyAuthenticatedResolve);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(guard).toBeTruthy();
   });
 });
