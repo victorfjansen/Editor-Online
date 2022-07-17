@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
-import { catchError, map } from 'rxjs'
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { catchError, map } from "rxjs";
 import {
   storeInLocalStorage,
   User,
   validateFields,
   validFields,
-} from 'src/app/shared'
+} from "src/app/shared";
 
-import { CadastroService } from '../../services/cadastro.service'
+import { CadastroService } from "../../services/cadastro.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './cadastro.component.html',
-  styleUrls: ['./cadastro.component.scss'],
+  selector: "app-root",
+  templateUrl: "./cadastro.component.html",
+  styleUrls: ["./cadastro.component.scss"],
 })
 export class CadastroComponent implements OnInit {
-  formCadastro: FormGroup
-  invalidFields: validFields[]
-  generalErrorMessage: string
-  userData: any
+  formCadastro: FormGroup;
+  invalidFields: validFields[];
+  generalErrorMessage: string;
+  userData: any;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -29,16 +29,16 @@ export class CadastroComponent implements OnInit {
   ) {
     this.formCadastro = this.formBuilder.group({
       email: [
-        '',
+        "",
         Validators.compose([
           Validators.email,
           Validators.required,
           Validators.minLength(3),
         ]),
       ],
-      username: ['', Validators.compose([Validators.required])],
+      username: ["", Validators.compose([Validators.required])],
       password: [
-        '',
+        "",
         Validators.compose([
           Validators.pattern(
             /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
@@ -46,48 +46,49 @@ export class CadastroComponent implements OnInit {
           Validators.required,
         ]),
       ],
-    })
+    });
 
-    this.invalidFields = []
-    this.generalErrorMessage = ''
-    this.userData = this.route.snapshot.data['userData']
+    this.invalidFields = [];
+    this.generalErrorMessage = "";
+    this.userData = this.route.snapshot.data["userData"];
   }
 
   getInvalidField(name: string) {
     const foundInvalidField = this.invalidFields.filter(
-      item => item.name === name
-    )
+      (item) => item.name === name
+    );
     return foundInvalidField
       ? this.invalidFields.includes(foundInvalidField[0])
-      : false
+      : false;
   }
 
   handleSubmit() {
     const allFieldsValid: validFields[] | Boolean = validateFields(
       this.formCadastro,
-      ['email', 'password', 'username']
-    )
+      ["email", "password", "username"]
+    );
     if (allFieldsValid === true) {
-      this.invalidFields = []
-      this.generalErrorMessage = ''
+      this.invalidFields = [];
+      this.generalErrorMessage = "";
       this.cadastroService
         .postUser(this.formCadastro.value)
         .pipe(
-          map(obj => obj),
-          catchError(error => {
-            throw new Error(error.error.message)
+          map((obj) => obj),
+          catchError((error) => {
+            throw new Error(error.error.message);
           })
         )
         .subscribe({
-          next: data => {
-            storeInLocalStorage('_id', data._id)
+          next: (data) => {
+            storeInLocalStorage("_id", data._id);
           },
-          error: data => (this.generalErrorMessage = data),
-        })
-    } else this.invalidFields = (<validFields[]>allFieldsValid).map(obj => obj)
+          error: (data) => (this.generalErrorMessage = data),
+        });
+    } else
+      this.invalidFields = (<validFields[]>allFieldsValid).map((obj) => obj);
   }
 
   ngOnInit(): void {
-    console.log(this.userData)
+    console.log(this.userData);
   }
 }
